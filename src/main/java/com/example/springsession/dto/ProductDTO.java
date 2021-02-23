@@ -6,6 +6,8 @@ public class ProductDTO {
     private String description;
     private String title;
 
+
+
     public boolean isInStock() {
         return inStock;
     }
@@ -40,7 +42,7 @@ public class ProductDTO {
 
     @Override
     public String toString() {
-        return "MyRequestDTO{" +
+        return "ProductDTO{" +
                 "inStock=" + inStock +
                 ", salePrice=" + salePrice +
                 ", description='" + description + '\'' +

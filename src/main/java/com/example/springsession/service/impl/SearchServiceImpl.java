@@ -19,16 +19,41 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public SearchResponseDTO getProducts(SearchRequestDTO request) {
         Map<String,Object> productResponce = searchClient.getProducts(request.getSearchTerm());
+        Map<String,Object> pLocation = searchClient.getProductLocation("stockLocation:\""+request.getLocation() + "\"");
+
+
+
+
+
         List<HashMap<String, Object>> products = ((List<HashMap<String,Object>>)((HashMap<String,Object>)productResponce.get("response")).get("docs"));;
+        List<HashMap<String, Object>> productsLocation = ((List<HashMap<String,Object>>)((HashMap<String,Object>)productResponce.get("response")).get("docs"));;
+
         List<ProductDTO> productDTOS = new ArrayList<>();
-        for (Map<String, Object> product: products) {
+        List<ProductDTO> list2 = new ArrayList<>();
+        SearchResponseDTO responseDTO =new SearchResponseDTO();
+        for (Map<String, Object> product: productsLocation) {
             // parse product into ProductDTO and add into productDTOS list
-            String title= (String) product.get("name");
             ProductDTO p=new ProductDTO();
+            String title= (String) product.get("name");
+            String descript=(String) product.get("description");
+
+
+            p.setTitle(title);
+            p.setDescription(descript);
+            productDTOS.add(p);
+        }
+         responseDTO.setProductLocation((productDTOS));
+
+
+
+        for (Map<String, Object> product: products) {
+            ProductDTO p=new ProductDTO();
+            String title= (String) product.get("name");
+
             p.setTitle(title);
             productDTOS.add(p);
         }
-        SearchResponseDTO responseDTO =new SearchResponseDTO();
+
         responseDTO.setProducts((productDTOS));
         return responseDTO;
 
