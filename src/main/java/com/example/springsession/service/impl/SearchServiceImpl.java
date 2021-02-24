@@ -21,7 +21,7 @@ public class SearchServiceImpl implements SearchService {
     public void awaitTerminationAfterShutdown(ExecutorService threadPool) {
         threadPool.shutdown();
         try {
-            if (!threadPool.awaitTermination((long)  1, TimeUnit.SECONDS)) {
+            if (!threadPool.awaitTermination((long)  60, TimeUnit.SECONDS)) {
                 threadPool.shutdownNow();
             }
         } catch (InterruptedException ex) {
@@ -65,7 +65,7 @@ public class SearchServiceImpl implements SearchService {
 
 
         Runnable runnableTask1 = () -> {
-        Map<String,Object> location = searchClient.getProductLocation(request.getSearchTerm());
+        Map<String,Object> location = searchClient.getProducts(request.getSearchTerm());
         List<HashMap<String, Object>> products = ((List<HashMap<String,Object>>)((HashMap<String,Object>)location.get("response")).get("docs"));;
         List<ProductDTO> productDTOS = new ArrayList<>();
         for (Map<String, Object> product: products) {
